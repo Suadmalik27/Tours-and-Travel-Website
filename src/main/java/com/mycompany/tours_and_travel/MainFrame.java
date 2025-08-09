@@ -103,7 +103,7 @@ authDialog.setLoginSuccessListener(new AuthDialog.LoginSuccessListener() {
     }
 });
 
-        topBarPanel = new TopBarPanel();
+        topBarPanel = new TopBarPanel(this);
         heroSectionPanel = new HeroSectionPanel();
 
         mainPanel.add(homePanel, "Home");
@@ -123,11 +123,11 @@ authDialog.setLoginSuccessListener(new AuthDialog.LoginSuccessListener() {
         // mainPanel.add(loginPanel, "Login");
         mainPanel.add(signupPanel, "Signup");
 
-        setJMenuBar(createMenuBar());
+        // Remove the menu bar and add the topBarPanel instead
+        // setJMenuBar(createMenuBar());
 
         setLayout(new BorderLayout());
-        // Removed topBarPanel to remove the top navigation bar GUI
-        // add(topBarPanel, BorderLayout.NORTH);
+        add(topBarPanel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(heroSectionPanel, BorderLayout.NORTH);
@@ -230,14 +230,6 @@ authDialog.setLoginSuccessListener(new AuthDialog.LoginSuccessListener() {
                 // Handle login submission, validate credentials, set logged-in user ID and propagate
                 String username = loginPanel.getUsername();
                 String password = loginPanel.getPassword();
-            //int userId = authenticateUser(username, password);
-            //if (userId != -1) {
-            //    setLoggedInUserId(userId);
-            //    cardLayout.show(mainPanel, "Home");
-            //} else {
-            //    System.out.println("Login failed or invalid credentials.");
-            //    // Optionally show error message dialog here
-            //}
             try {
                 User user = userDAO.authenticate(username, password);
                 if (user != null) {
@@ -254,6 +246,17 @@ authDialog.setLoginSuccessListener(new AuthDialog.LoginSuccessListener() {
                 System.out.println("Unknown navigation command: " + command);
                 break;
         }
+    }
+
+    public void showPanel(String panelName) {
+        cardLayout.show(mainPanel, panelName);
+        if ("MyBookings".equals(panelName)) {
+            myBookingsPanel.loadBookings();
+        }
+    }
+
+    public void showLoginDialog() {
+        authDialog.showLogin();
     }
 
     private int authenticateUser(String username, String password) {

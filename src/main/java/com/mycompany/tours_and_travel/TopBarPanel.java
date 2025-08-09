@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,10 +18,14 @@ public class TopBarPanel extends JPanel {
     private JButton tripPlannerButton;
     private JButton contactUsButton;
     private JButton loginSignupButton;
+    
+    private MainFrame mainFrame;
+    private JButton activeButton;
 
-    public TopBarPanel() {
+    public TopBarPanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
         setLayout(new FlowLayout(FlowLayout.LEFT, 15, 10));
-        setBackground(new Color(70, 130, 180)); // Steel Blue color for gradient base
+        setBackground(new Color(70, 130, 180));
 
         // Create buttons
         homeButton = createNavButton("Home");
@@ -40,8 +45,8 @@ public class TopBarPanel extends JPanel {
         add(contactUsButton);
         add(loginSignupButton);
 
-        // Highlight active page example (Home)
-        setActiveButton(homeButton);
+        // Set up navigation actions
+        setupNavigationActions();
     }
 
     private JButton createNavButton(String text) {
@@ -58,7 +63,7 @@ public class TopBarPanel extends JPanel {
         // Hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(100, 149, 237)); // Cornflower Blue
+                button.setBackground(new Color(100, 149, 237));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (button != activeButton) {
@@ -67,19 +72,73 @@ public class TopBarPanel extends JPanel {
             }
         });
 
-        // Click action example (can be customized)
-        button.addActionListener(e -> setActiveButton(button));
-
         return button;
     }
 
-    private JButton activeButton;
+    private void setupNavigationActions() {
+        homeButton.addActionListener(e -> {
+            mainFrame.showPanel("Home");
+            setActiveButton(homeButton);
+        });
+        
+        destinationsButton.addActionListener(e -> {
+            mainFrame.showPanel("Destinations");
+            setActiveButton(destinationsButton);
+        });
+        
+        packagesButton.addActionListener(e -> {
+            mainFrame.showPanel("Packages");
+            setActiveButton(packagesButton);
+        });
+        
+        hotelsButton.addActionListener(e -> {
+            mainFrame.showPanel("ExploreHotels");
+            setActiveButton(hotelsButton);
+        });
+        
+        tripPlannerButton.addActionListener(e -> {
+            mainFrame.showPanel("TripPlanner");
+            setActiveButton(tripPlannerButton);
+        });
+        
+        contactUsButton.addActionListener(e -> {
+            mainFrame.showPanel("ContactUs");
+            setActiveButton(contactUsButton);
+        });
+        
+        loginSignupButton.addActionListener(e -> {
+            mainFrame.showLoginDialog();
+        });
+    }
 
-    private void setActiveButton(JButton button) {
+    public void setActiveButton(JButton button) {
         if (activeButton != null) {
             activeButton.setBackground(new Color(70, 130, 180));
         }
         activeButton = button;
-        activeButton.setBackground(new Color(255, 165, 0)); // Orange highlight
+        activeButton.setBackground(new Color(255, 165, 0));
+    }
+    
+    public void updateLoginButton(boolean isLoggedIn) {
+        if (isLoggedIn) {
+            loginSignupButton.setText("My Bookings");
+            // Remove existing listeners
+            for (ActionListener al : loginSignupButton.getActionListeners()) {
+                loginSignupButton.removeActionListener(al);
+            }
+            loginSignupButton.addActionListener(e -> {
+                mainFrame.showPanel("MyBookings");
+                setActiveButton(loginSignupButton);
+            });
+        } else {
+            loginSignupButton.setText("Login/Signup");
+            // Remove existing listeners
+            for (ActionListener al : loginSignupButton.getActionListeners()) {
+                loginSignupButton.removeActionListener(al);
+            }
+            loginSignupButton.addActionListener(e -> {
+                mainFrame.showLoginDialog();
+            });
+        }
     }
 }
