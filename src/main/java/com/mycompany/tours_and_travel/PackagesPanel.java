@@ -1,4 +1,3 @@
-
 package com.mycompany.tours_and_travel;
 
 import java.awt.BorderLayout;
@@ -115,17 +114,22 @@ public class PackagesPanel extends JPanel {
 
         // Image
         JLabel imageLabel = new JLabel();
-        // Load image from resources/images folder based on package destination (lowercase, underscores)
         try {
-            String imagePath = "/images/" + pkg.getDestination().toLowerCase().replace(" ", "_") + ".jpg";
-            java.net.URL imgURL = getClass().getResource(imagePath);
-            if (imgURL != null) {
-                ImageIcon icon = new ImageIcon(imgURL);
-                Image img = icon.getImage().getScaledInstance(120, 80, Image.SCALE_SMOOTH);
-                imageLabel.setIcon(new ImageIcon(img));
-            } else {
-                imageLabel.setText("[No Image]");
-            }
+            String imagePath;
+                if (pkg.getDestination().equalsIgnoreCase("Beach Paradise")) {
+                    imagePath = "img/bp.jpg";
+                } else if (pkg.getDestination().equalsIgnoreCase("Mountain Adventure")) {
+                    imagePath = "img/md.jpeg";
+                } else if (pkg.getDestination().equalsIgnoreCase("City Explorer")) {
+                    imagePath = "img/city.jpeg";
+                } else if (pkg.getDestination().equalsIgnoreCase("Safari Expedition")) {
+                    imagePath = "img/saf.jpeg";
+                } else {
+                    imagePath = "img/" + pkg.getDestination().toLowerCase().replace(" ", "_") + ".jpg";
+                }
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image img = icon.getImage().getScaledInstance(120, 80, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(img));
         } catch (Exception e) {
             imageLabel.setText("[No Image]");
         }
@@ -189,8 +193,8 @@ public class PackagesPanel extends JPanel {
 
         List<Package> filtered = new ArrayList<>();
         for (Package pkg : allPackages) {
-        boolean matchesKeyword = keyword.isEmpty() || pkg.getDestination().toLowerCase().contains(keyword);
-        boolean matchesCategory = category.equals("All") || pkg.getDuration().toLowerCase().contains(category.toLowerCase());
+            boolean matchesKeyword = keyword.isEmpty() || pkg.getDestination().toLowerCase().contains(keyword);
+            boolean matchesCategory = category.equals("All") || pkg.getDuration().toLowerCase().contains(category.toLowerCase());
             boolean matchesBudget = pkg.getPrice() <= maxBudget;
 
             if (matchesKeyword && matchesCategory && matchesBudget) {

@@ -43,6 +43,31 @@ public class HomePanel extends JPanel {
         }
         add(navBar, BorderLayout.NORTH);
 
+        // Middle Navigation Bar (secondary menu)
+        JPanel middleNavBar = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        middleNavBar.setBackground(new Color(169, 211, 240, 230)); // #A9D3F0 with 0.9 alpha
+        String[] middleNavItems = {"Home", "Destinations", "Packages", "Hotels", "Trip Planner", "Contact Us", "Login/Signup"};
+        for (String item : middleNavItems) {
+            JButton btn = new JButton(item);
+            btn.setFocusPainted(false);
+            btn.setForeground(Color.WHITE);
+            btn.setBackground(new Color(169, 211, 240, 230)); // lighter blue tone with transparency
+            btn.setBorderPainted(false);
+            btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+            btn.setActionCommand(item.replaceAll(" ", ""));
+            btn.addActionListener(navigationListener);
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(new Color(255, 179, 71)); // #FFB347 warm peach tone
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(new Color(169, 211, 240, 230));
+                }
+            });
+            middleNavBar.add(btn);
+        }
+        add(middleNavBar, BorderLayout.NORTH);
+
         // Main content panel with vertical layout
         JPanel mainContent = new JPanel();
         mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
@@ -52,7 +77,7 @@ public class HomePanel extends JPanel {
         // Hero Banner Section
         JPanel heroBanner = new JPanel();
         heroBanner.setBackground(new Color(70, 130, 180)); // Steel Blue
-        heroBanner.setPreferredSize(new Dimension(0, 150));
+        heroBanner.setPreferredSize(new Dimension(0, 100));
         heroBanner.setLayout(new BoxLayout(heroBanner, BoxLayout.Y_AXIS));
         JLabel welcomeLabel = new JLabel("Your Next Adventure Awaits – Explore Now");
         welcomeLabel.setForeground(Color.WHITE);
@@ -109,10 +134,24 @@ public class HomePanel extends JPanel {
             card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
             card.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
             card.setBackground(new Color(250, 250, 250));
-            card.setPreferredSize(new Dimension(150, 220));
+            card.setPreferredSize(new Dimension(300, 300));
 
-            JLabel imgLabel = new JLabel("Image " + i, SwingConstants.CENTER);
-            imgLabel.setPreferredSize(new Dimension(150, 100));
+            JLabel imgLabel;
+            if (i == 1) {
+                imgLabel = new JLabel(new javax.swing.ImageIcon("img/rr.jpeg"));
+            } else if (i == 2) {
+                imgLabel = new JLabel(new javax.swing.ImageIcon("img/ff.jpeg"));
+            } else if (i == 3) {
+                imgLabel = new JLabel(new javax.swing.ImageIcon("img/kerela.jpeg"));
+                
+                }else if (i == 4) {
+                imgLabel = new JLabel(new javax.swing.ImageIcon("img/mald.jpeg"));
+                
+                }
+                else {
+                imgLabel = new JLabel("Image " + i, SwingConstants.CENTER);
+            }
+            imgLabel.setPreferredSize(new Dimension(300, 200));
             imgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             imgLabel.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
             card.add(imgLabel);
