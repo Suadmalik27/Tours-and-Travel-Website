@@ -13,11 +13,9 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -99,32 +97,6 @@ public class HomePanel extends JPanel {
         mainContent.add(heroBanner);
         mainContent.add(Box.createRigidArea(new Dimension(0, 25)));
 
-        // Search Section
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        searchPanel.setBackground(Color.WHITE);
-        JTextField destinationField = new JTextField(15);
-        destinationField.setToolTipText("Enter destination");
-        destinationField.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        String[] travelTypes = {"Adventure", "Beach", "City"};
-        JComboBox<String> travelTypeCombo = new JComboBox<>(travelTypes);
-        travelTypeCombo.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        JTextField dateField = new JTextField(10);
-        dateField.setToolTipText("Travel dates");
-        dateField.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        JButton searchBtn = new JButton("Search");
-        searchBtn.setActionCommand("Search");
-        searchBtn.setFont(new Font("SansSerif", Font.BOLD, 14));
-        searchBtn.setBackground(new Color(30, 144, 255));
-        searchBtn.setForeground(Color.WHITE);
-        searchBtn.setFocusPainted(false);
-        searchBtn.addActionListener(navigationListener);
-        searchPanel.add(destinationField);
-        searchPanel.add(travelTypeCombo);
-        searchPanel.add(dateField);
-        searchPanel.add(searchBtn);
-        mainContent.add(searchPanel);
-        mainContent.add(Box.createRigidArea(new Dimension(0, 25)));
-
         // Featured Packages Section
         JPanel featuredPanel = new JPanel(new GridLayout(1, 4, 15, 0));
         featuredPanel.setBackground(Color.WHITE);
@@ -143,10 +115,10 @@ public class HomePanel extends JPanel {
                 imgLabel = new JLabel(new javax.swing.ImageIcon("img/ff.jpeg"));
             } else if (i == 3) {
                 imgLabel = new JLabel(new javax.swing.ImageIcon("img/kerela.jpeg"));
-                
+
                 }else if (i == 4) {
                 imgLabel = new JLabel(new javax.swing.ImageIcon("img/mald.jpeg"));
-                
+
                 }
                 else {
                 imgLabel = new JLabel("Image " + i, SwingConstants.CENTER);

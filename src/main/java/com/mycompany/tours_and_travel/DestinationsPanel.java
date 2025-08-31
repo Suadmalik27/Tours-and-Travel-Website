@@ -3,14 +3,12 @@ package com.mycompany.tours_and_travel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,11 +45,26 @@ public class DestinationsPanel extends JPanel {
 
         // Sample destinations data
         allDestinations = new ArrayList<>();
-        allDestinations.add(new Destination("Paris", "Europe", "Sightseeing", 1500, "paris.jpg", "The city of lights and love."));
-        allDestinations.add(new Destination("Bali", "Asia", "Relaxation", 1200, "bali.jpg", "Tropical paradise with beaches."));
-        allDestinations.add(new Destination("Swiss Alps", "Europe", "Adventure", 2000, "swiss_alps.jpg", "Mountain adventures and skiing."));
-        allDestinations.add(new Destination("New York", "North America", "Sightseeing", 1800, "new_york.jpg", "The city that never sleeps."));
-        allDestinations.add(new Destination("Sydney", "Australia", "Sightseeing", 1700, "sydney.jpg", "Iconic landmarks and beaches."));
+        allDestinations.add(new Destination("Paris", "Europe", "Sightseeing", 1500, "paris.jpg", "The city of lights and love.",
+                "Eiffel Tower, Louvre Museum, Notre-Dame Cathedral",
+                "April to June, September to November",
+                "Try local pastries, learn basic French phrases, beware of pickpockets"));
+        allDestinations.add(new Destination("Bali", "Asia", "Relaxation", 1200, "bali.jpg", "Tropical paradise with beaches.",
+                "Uluwatu Temple, Seminyak Beach, Tegallalang Rice Terraces",
+                "April to October",
+                "Respect local customs, try Balinese cuisine, use mosquito repellent"));
+        allDestinations.add(new Destination("Swiss Alps", "Europe", "Adventure", 2000, "swiss_alps.jpg", "Mountain adventures and skiing.",
+                "Matterhorn, Jungfrau Region, Zermatt",
+                "December to March",
+                "Dress warmly, book ski passes in advance, try Swiss chocolate"));
+        allDestinations.add(new Destination("New York", "North America", "Sightseeing", 1800, "newyork.jpg", "The city that never sleeps.",
+                "Times Square, Central Park, Statue of Liberty",
+                "April to June, September to early November",
+                "Use public transport, visit museums, try diverse cuisines"));
+        allDestinations.add(new Destination("Sydney", "Australia", "Sightseeing", 1700, "sydney2.jpg", "Iconic landmarks and beaches.",
+                "Sydney Opera House, Bondi Beach, Harbour Bridge",
+                "September to November, March to May",
+                "Sun protection is a must, explore local markets, take coastal walks"));
 
         // Filters panel
         JPanel filtersPanel = new JPanel();
@@ -177,20 +190,51 @@ public class DestinationsPanel extends JPanel {
     }
 
     private void showDetails(Destination dest) {
+        System.out.println("showDetails called with destination: " + (dest != null ? dest.getName() : "null"));
         detailsPanel.removeAll();
         if (dest != null) {
             // Image placeholder
             JLabel imageLabel = new JLabel();
-            ImageIcon icon = new ImageIcon(getClass().getResource("/images/" + dest.getImagePath()));
-            imageLabel.setIcon(icon);
+            java.io.File imgFile = new java.io.File("img/" + dest.getImagePath());
+            if (imgFile.exists()) {
+                ImageIcon icon = new ImageIcon(imgFile.getAbsolutePath());
+                imageLabel.setIcon(icon);
+            } else {
+                System.err.println("Image not found: img/" + dest.getImagePath());
+                imageLabel.setText("Image not available");
+            }
             detailsPanel.add(imageLabel);
 
             // Description
             JLabel descLabel = new JLabel("<html><p style=\"width:200px\">" + dest.getDescription() + "</p></html>");
             detailsPanel.add(descLabel);
 
-            // View Packages button
-            detailsPanel.add(viewPackagesButton);
+            // Budget
+            JLabel budgetLabel = new JLabel("Budget: $" + dest.getBudget());
+            detailsPanel.add(budgetLabel);
+
+            // Additional details
+            JLabel regionLabel = new JLabel("Region: " + dest.getRegion());
+            detailsPanel.add(regionLabel);
+
+            JLabel activityLabel = new JLabel("Activity Type: " + dest.getActivityType());
+            detailsPanel.add(activityLabel);
+
+            // Popular Attractions
+            JLabel attractionsLabel = new JLabel("<html><b>Popular Attractions:</b> " + dest.getPopularAttractions() + "</html>");
+            detailsPanel.add(attractionsLabel);
+
+            // Best Time to Visit
+            JLabel bestTimeLabel = new JLabel("<html><b>Best Time to Visit:</b> " + dest.getBestTimeToVisit() + "</html>");
+            detailsPanel.add(bestTimeLabel);
+
+            // Travel Tips
+            JLabel tipsLabel = new JLabel("<html><b>Travel Tips:</b> " + dest.getTravelTips() + "</html>");
+            detailsPanel.add(tipsLabel);
+
+        } else {
+            JLabel noSelectionLabel = new JLabel("Select a destination to see details.");
+            detailsPanel.add(noSelectionLabel);
         }
         detailsPanel.revalidate();
         detailsPanel.repaint();
@@ -211,13 +255,22 @@ public class DestinationsPanel extends JPanel {
         private String imagePath;
         private String description;
 
-        public Destination(String name, String region, String activityType, int budget, String imagePath, String description) {
+        // New fields for detailed info
+        private String popularAttractions;
+        private String bestTimeToVisit;
+        private String travelTips;
+
+        public Destination(String name, String region, String activityType, int budget, String imagePath, String description,
+                           String popularAttractions, String bestTimeToVisit, String travelTips) {
             this.name = name;
             this.region = region;
             this.activityType = activityType;
             this.budget = budget;
             this.imagePath = imagePath;
             this.description = description;
+            this.popularAttractions = popularAttractions;
+            this.bestTimeToVisit = bestTimeToVisit;
+            this.travelTips = travelTips;
         }
 
         public String getName() {
@@ -242,6 +295,18 @@ public class DestinationsPanel extends JPanel {
 
         public String getDescription() {
             return description;
+        }
+
+        public String getPopularAttractions() {
+            return popularAttractions;
+        }
+
+        public String getBestTimeToVisit() {
+            return bestTimeToVisit;
+        }
+
+        public String getTravelTips() {
+            return travelTips;
         }
     }
 }

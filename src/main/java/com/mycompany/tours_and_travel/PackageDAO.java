@@ -88,4 +88,28 @@ public class PackageDAO {
             stmt.executeUpdate();
         }
     }
+
+    public List<Package> getPackagesByDestination(String destination) throws SQLException {
+        List<Package> packages = new ArrayList<>();
+        String sql = "SELECT id, destination, duration, price, rating, description FROM packages WHERE destination = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, destination);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Package pkg = new Package(
+                        rs.getInt("id"),
+                        rs.getString("destination"),
+                        rs.getString("duration"),
+                        rs.getDouble("price"),
+                        rs.getDouble("rating"),
+                        rs.getString("description")
+                    );
+                    packages.add(pkg);
+                }
+            }
+        }
+        return packages;
+    }
 }
