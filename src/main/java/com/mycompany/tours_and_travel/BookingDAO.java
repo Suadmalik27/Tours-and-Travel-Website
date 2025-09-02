@@ -11,7 +11,7 @@ public class BookingDAO {
 
 public List<Booking> getBookingsByUserId(int userId) throws SQLException {
         List<Booking> bookings = new ArrayList<>();
-        String sql = "SELECT id, user_id, package_id, booking_date, status FROM bookings WHERE user_id = ?";
+        String sql = "SELECT id, user_id, package_id, customer_name, customer_email, booking_date, status FROM bookings WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -22,8 +22,8 @@ public List<Booking> getBookingsByUserId(int userId) throws SQLException {
                         rs.getInt("id"),
                         rs.getInt("user_id"),
                         rs.getInt("package_id"),
-                        "", // customerName not retrieved here
-                        "", // customerEmail not retrieved here
+                        rs.getString("customer_name"),
+                        rs.getString("customer_email"),
                         rs.getDate("booking_date"),
                         rs.getString("status")
                     );
@@ -36,7 +36,7 @@ public List<Booking> getBookingsByUserId(int userId) throws SQLException {
 
 public List<Booking> getAllBookings() throws SQLException {
         List<Booking> bookings = new ArrayList<>();
-        String sql = "SELECT id, user_id, package_id, booking_date, status FROM bookings";
+        String sql = "SELECT id, user_id, package_id, customer_name, customer_email, booking_date, status FROM bookings";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -46,8 +46,8 @@ public List<Booking> getAllBookings() throws SQLException {
                     rs.getInt("id"),
                     rs.getInt("user_id"),
                     rs.getInt("package_id"),
-                    "", // customerName not retrieved here
-                    "", // customerEmail not retrieved here
+                    rs.getString("customer_name"),
+                    rs.getString("customer_email"),
                     rs.getDate("booking_date"),
                     rs.getString("status")
                 );
@@ -58,13 +58,15 @@ public List<Booking> getAllBookings() throws SQLException {
     }
 
     public void addBooking(Booking booking) throws SQLException {
-        String sql = "INSERT INTO bookings (user_id, package_id, booking_date, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO bookings (user_id, package_id, customer_name, customer_email, booking_date, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, booking.getUserId());
             stmt.setInt(2, booking.getPackageId());
-            stmt.setDate(3, new java.sql.Date(booking.getBookingDate().getTime()));
-            stmt.setString(4, "Pending");
+            stmt.setString(3, booking.getCustomerName());
+            stmt.setString(4, booking.getCustomerEmail());
+            stmt.setDate(5, new java.sql.Date(booking.getBookingDate().getTime()));
+            stmt.setString(6, "Pending");
             stmt.executeUpdate();
         }
     }
