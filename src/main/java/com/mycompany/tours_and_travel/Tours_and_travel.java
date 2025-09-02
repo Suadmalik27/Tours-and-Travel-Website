@@ -54,7 +54,7 @@ public class Tours_and_travel extends JFrame implements ActionListener {
         myBookingsPanel = new MyBookingsPanel(bookingDAO, paymentDAO, this);
         contactUsPanel = new ContactUsPanel(this);
         destinationsPanel = new DestinationsPanel(this);
-        packagesPanel = new PackagesPanel();
+        packagesPanel = new PackagesPanel(this);
 
         mainPanel.add(homePanel, "Home");
         mainPanel.add(exploreToursPanel, "ExploreHotels");

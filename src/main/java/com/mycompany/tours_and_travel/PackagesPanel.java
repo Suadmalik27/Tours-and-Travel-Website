@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +36,10 @@ public class PackagesPanel extends JPanel {
     private JScrollPane scrollPane;
 
     private List<Package> allPackages; // Assume this is populated from backend or DAO
+    private ActionListener navigationListener;
 
-    public PackagesPanel() {
+    public PackagesPanel(ActionListener navigationListener) {
+        this.navigationListener = navigationListener;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createTitledBorder("Travel Packages"));
 
@@ -181,7 +184,8 @@ public class PackagesPanel extends JPanel {
 
         // Button actions (placeholders)
         wishlistButton.addActionListener(e -> JOptionPane.showMessageDialog(this, pkg.getDestination() + " added to wishlist!"));
-        bookNowButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Booking " + pkg.getDestination() + "..."));
+        bookNowButton.setActionCommand("BookNowPackage" + pkg.getId());
+        bookNowButton.addActionListener(navigationListener);
 
         return card;
     }

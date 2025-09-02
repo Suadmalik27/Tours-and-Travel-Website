@@ -68,7 +68,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
         homePanel = new HomePanel(this);
         destinationsPanel = new DestinationsPanel(this);
-        packagesPanel = new PackagesPanel();
+        packagesPanel = new PackagesPanel(this);
         exploreToursPanel = new ExploreToursPanel(hotelDAO, hotel -> {
             hotelRoomBookingPanel.loadRoomsForHotel(hotel);
             cardLayout.show(mainPanel, "HotelRoomBooking");
@@ -243,7 +243,11 @@ authDialog.setLoginSuccessListener(new AuthDialog.LoginSuccessListener() {
             }
                 break;
             default:
-                System.out.println("Unknown navigation command: " + command);
+                if (command.startsWith("BookNow")) {
+                    cardLayout.show(mainPanel, "HotelRoomBooking");
+                } else {
+                    System.out.println("Unknown navigation command: " + command);
+                }
                 break;
         }
     }
